@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head_resources(~{::title})">
+    <title>Index</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div>
+    <-- Index -->
+
+    <form method="POST" id="logout-form" name="logout-form" th:action="@{/logout}">
+        <input type="submit" value="Logout" />
+    </form>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

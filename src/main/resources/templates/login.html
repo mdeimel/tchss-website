@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head_resources(~{::title})">
+    <title>Login</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div>
+    <div th:if="${newlyRegistered == true}"
+         th:text="${'Registration successful. Please login.'}" />
+
+    <-- Login -->
+    <form method="POST" id="login-form" name="login-form" th:action="@{/login}">
+        <input id="email" name="email" />
+        <input type="password" id="password" name="password" />
+        <input type="submit" value="Login" />
+    </form>
+
+    <a th:href="@{/forgot-password}">Forgot Password</a>
+
+    <a th:href="@{/register}">Register</a>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
