@@ -1,19 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: head_resources(~{::title})">
-    <title>Index</title>
+    <title>Twin Cities Homeschool Sports</title>
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"></div>
 
-<div>
-    <-- Index -->
-
-    <form method="POST" id="logout-form" name="logout-form" th:action="@{/logout}">
-        <input type="submit" value="Logout" />
-    </form>
+<div class="container-fluid bg-green">
+    <div class="container bg-light">
+        <div class="row">
+            <div class="col">
+                <h1>Mission Statement</h1>
+                <p>
+                    Twin Cities Homeschool Sports exists for the purpose of providing a Christian-based summer sports
+                    opportunity, quality family and community time, for kids and parents.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>How it works</h1>
+                <p>
+                    TCHS is a co-op of families, working together to provide baseball and soccer to children, led by the parents.
+                    Students must have a parent on site at all times.
+                    All participants and parents are expected to behave themselves in a sportsmanlike manner.
+                    Violence, foul language, arguments, and tantrums will not be tolerated and may result in expulsion from Twin Cities Home School Sports.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1>Code of Conduct</h1>
+                <p>
+                    Students must have a parent on site at all times.
+                    All participants and parents are expected to behave themselves in a sportsmanlike manner.
+                    Violence, foul language, arguments, and tantrums will not be tolerated and may result in expulsion from Twin Cities Home School Sports.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <div th:replace="fragments/footer :: footer"></div>
 

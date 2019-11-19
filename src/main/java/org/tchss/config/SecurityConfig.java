@@ -30,11 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // Allow certain pages without authentication
                 .authorizeRequests()
-                    .antMatchers(
-                            "/login",
-                        "/register",
+                    .antMatchers("/",
+                        "/login",
+                        "/create-account",
                         "/forgot-password",
-                        "/password-reset/**").permitAll()
+                        "/password-reset/**",
+                        "/webjars/**",
+                        "/javascripts/**",
+                        "/stylesheets/**").permitAll()
                     // All other requests require authentication
                     .anyRequest()
                     .authenticated()
@@ -44,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     // Use "email" instead of "username" for authentication
                     .usernameParameter("email")
                 .and()
-                    .logout();
+                    .logout()
+                    .logoutSuccessUrl("/");
     }
 }

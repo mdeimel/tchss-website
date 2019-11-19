@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -36,7 +37,7 @@ public class User {
 
     @NotNull
     @NotBlank
-    @Min(value = 8, message = "The password must be at least 8 characters long.")
+    @Size(min = 8, message = "The password must be at least 8 characters long.")
     private String password;
 
     @NotNull

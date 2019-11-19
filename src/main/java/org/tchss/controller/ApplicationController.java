@@ -1,6 +1,8 @@
 package org.tchss.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.tchss.model.User;
 import org.tchss.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 @Controller
 public class ApplicationController {
@@ -19,7 +22,11 @@ public class ApplicationController {
     private UserService userService;
 
     @GetMapping
-    public String index() {
+    public String index(Principal principal,
+                        Model model) {
+        if (principal != null) {
+            model.addAttribute("email", principal.getName());
+        }
         return "index";
     }
 
@@ -28,17 +35,22 @@ public class ApplicationController {
         return "login";
     }
 
-    @GetMapping("register")
-    public String registerPage() {
-        return "register";
+//    @PostMapping("login")
+//    public String postLogin(Authentication authentication, AuthenticationProvider authenticationProvider) {
+//        return "login";
+//    }
+
+    @GetMapping("create-account")
+    public String createAccountPage() {
+        return "create-account";
     }
 
-    @PostMapping("register")
-    public String register(@RequestParam("email") String email,
-                           @RequestParam("password") String password,
-                           @RequestParam("firstName") String firstName,
-                           @RequestParam("lastName") String lastName,
-                           Model model) {
+    @PostMapping("create-account")
+    public String createAccount(@RequestParam("email") String email,
+                                @RequestParam("password") String password,
+                                @RequestParam("firstName") String firstName,
+                                @RequestParam("lastName") String lastName,
+                                Model model) {
         User user = new User();
         user.setPassword(password);
         user.setEmail(email);
@@ -84,8 +96,21 @@ public class ApplicationController {
         return "login";
     }
 
-    @GetMapping("test")
-    public String test() {
-        return "index";
+    @GetMapping("register")
+    public String register(Principal principal,
+                           Model model) {
+        if (principal != null) {
+            model.addAttribute("email", principal.getName());
+        }
+        return "register";
+    }
+
+    @GetMapping("roster")
+    public String roster(Principal principal,
+                           Model model) {
+        if (principal != null) {
+            model.addAttribute("email", principal.getName());
+        }
+        return "roster";
     }
 }
