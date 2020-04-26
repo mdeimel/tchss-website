@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: head_resources(~{::title})">
+<head th:replace="fragments/header :: head_resources(~{::title}, ~{}, ~{})">
     <title>Login</title>
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"></div>
 
-<div>
-    <div th:if="${newlyRegistered == true}"
-         th:text="${'Registration successful. Please login.'}" />
+<h3>Please login first.</h3>
 
-    <-- Login -->
-    <form method="POST" id="login-form" name="login-form" th:action="@{/login}">
-        <input id="email" name="email" />
-        <input type="password" id="password" name="password" />
-        <input type="submit" value="Login" />
-    </form>
+<!--<div>-->
+    <!--<div th:if="${newlyRegistered == true}"-->
+         <!--th:text="${'Registration successful. Please login.'}" />-->
 
-    <a th:href="@{/forgot-password}">Forgot Password</a>
+    <!--<&#45;&#45; Login &ndash;&gt;-->
+    <!--<form method="POST" id="login-form" name="login-form" th:action="@{/login}">-->
+        <!--<input id="email" name="email" />-->
+        <!--<input type="password" id="password" name="password" />-->
+        <!--<input type="submit" value="Login" />-->
+    <!--</form>-->
 
-    <a th:href="@{/register}">Register</a>
+    <!--<a th:href="@{/forgot-password}">Forgot Password</a>-->
 
-</div>
+    <!--<a th:href="@{/register}">Register</a>-->
+
+<!--</div>-->
 
 <div th:replace="fragments/footer :: footer"></div>
 

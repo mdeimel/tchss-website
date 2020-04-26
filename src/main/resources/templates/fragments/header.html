@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head_resources(title)">
+<head th:fragment="head_resources(title, links, scripts)">
     <title th:replace="${title}">Twin Cities Homeschool Sports</title>
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -9,7 +9,18 @@
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/5.11.2/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/stylesheets/application.css}">
 
+    <!-- Include <link> blocks from other pages here -->
+    <th:block th:replace="${links}" />
+
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+            crossorigin="anonymous"></script>
     <script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script th:src="@{/javascripts/application.js}"></script>
+
+    <!-- Include <script> blocks from other pages here -->
+    <th:block th:replace="${scripts}" />
 </head>
 <body>
 <div th:fragment="header">

@@ -26,15 +26,14 @@ public class AuthProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getPrincipal().toString();
+        String errorMessage = "Either this is an invalid email address, or an incorrect password";
         User user = userService.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Cannot find a user with the email: " + email));
+                .orElseThrow(() -> new org.tchss.exception.AuthenticationException(errorMessage));
         String suppliedPassword = authentication.getCredentials().toString();
         boolean authenticated = BCrypt.checkpw(suppliedPassword, user.getPassword());
         System.out.println("Authenticated: " + authenticated);
         if (!authenticated) {
-            // TODO Handle this by providing a nice error message to the user
-            // TODO Change this to an authentication specific exception
-            throw new RuntimeException("Invalid email and password combination");
+            throw new org.tchss.exception.AuthenticationException(errorMessage);
         }
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         String role = user.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";

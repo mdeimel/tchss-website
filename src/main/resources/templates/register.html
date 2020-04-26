@@ -1,16 +1,227 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: head_resources(~{::title})">
+<head th:replace="fragments/header :: head_resources(~{::title}, ~{::link}, ~{::script})">
     <title>Register</title>
+
+    <link rel="stylesheet" th:href="@{/stylesheets/register.css}">
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script th:src="@{/javascripts/register.js}"></script>
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"></div>
 
-<div>
-    <-- Register -->
+<div class="container">
+    <div id="register-instructions" class="alert alert-warning" role="alert">
+        Follow these steps to register
+        <ol>
+            <li>Enter information for each child</li>
+            <li>Deselect dates when parent is not available to assist</li>
+            <li>Process payment</li>
+        </ol>
+    </div>
+
+    <form method="POST" id="register-form" name="register-form" th:action="@{/register}">
+        <h4>Child Registration</h4>
+        <div class="row">
+            <div class="col-2">
+                <label for="first-name">First Name</label>
+                <input id="first-name" name="first-name" type="text" class="form-control">
+            </div>
+            <div class="col-2">
+                <label for="last-name">Last Name</label>
+                <input id="last-name" name="last-name" type="text" class="form-control">
+            </div>
+            <div class="col-2">
+                <label for="birth-month">Birth Month</label>
+                <select id="birth-month" name="birth-month" class="form-control">
+                    <option></option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label for="birth-year">Birth Year</label>
+                <select id="birth-year" name="birth-year" class="form-control">
+                    <option></option>
+                    <div th:each="birthYear : ${birthYears}">
+                        <option th:value="${birthYear}" th:text="${birthYear}"></option>
+                    </div>
+                </select>
+            </div>
+            <div class="col-1">
+                <label class="form-check-label" for="baseball">Baseball</label>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary btn-toggle btn-register">No</button>
+                    <input type="hidden" id="baseball" name="baseball" value="false">
+                </div>
+            </div>
+            <div class="col-1">
+                <label class="form-check-label" for="soccer">Soccer</label>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary btn-toggle btn-register">No</button>
+                    <input type="hidden" id="soccer" name="soccer" value="false">
+                </div>
+            </div>
+            <div class="col-2">
+                <input type="submit" id="register-add-child" value="Add Child" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+
+    <table id="register-table"
+           th:if="${registrations.size() > 0}"
+           class="table">
+        <thead>
+        <tr class="d-flex">
+            <th class="col-2">First</th>
+            <th class="col-2">Last</th>
+            <th class="col-2 center">Birth Month</th>
+            <th class="col-2 center">Birth Year</th>
+            <th class="col-1 center">Baseball</th>
+            <th class="col-1 center">Soccer</th>
+            <th class="col-1 center">Cost</th>
+            <th class="col-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="registration : ${registrations}"
+            class="d-flex">
+            <td th:text="${registration.firstName}"
+                class="col-2"></td>
+            <td th:text="${registration.lastName}"
+                class="col-2"></td>
+            <td th:text="${registration.birthMonth}"
+                class="col-2 center"></td>
+            <td th:text="${registration.birthYear}"
+                class="col-2 center"></td>
+            <td class="registration-baseball col-1 center">
+                <i th:if="${registration.baseball == true}"
+                   class="fas fa-check text-success register-baseball"></i>
+                <i th:if="${registration.baseball == false}"
+                   class="fas fa-times text-danger"></i>
+            </td>
+            <td class="registration-soccer col-1 center">
+                <i th:if="${registration.soccer == true}"
+                   class="fas fa-check text-success register-soccer"></i>
+                <i th:if="${registration.soccer == false}"
+                   class="fas fa-times text-danger"></i>
+            </td>
+            <td class="col-1 center">
+                <span th:text="${'$'+registration.cost}"></span>
+            </td>
+<!--            <td th:text="${registration.baseball}"-->
+<!--                class="registration-baseball"></td>-->
+<!--            <td th:text="${registration.soccer}"-->
+<!--                class="registration-soccer"></td>-->
+            <td class="col-2 center">
+                <form th:method="DELETE"
+                      id="delete-registration"
+                      name="delete-registration"
+                      th:action="@{/register/{id}(id=${registration.id})}">
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr class="d-flex">
+            <th class="col-2"><b>Total</b></th>
+            <th class="col-8"></th>
+            <th th:text="${'$'+totalCost}"
+                class="col-1 center"></th>
+            <th class="col-1"></th>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--<form method="POST" id="register-form" name="register-form" th:action="@{/register}">-->
+    <!--    <div class="row">-->
+    <!--        <div class="col">-->
+    <!--            <label for="first-name">First Name</label>-->
+    <!--            <input id="first-name" name="first-name" type="text" class="form-control">-->
+    <!--        </div>-->
+    <!--        <div class="col">-->
+    <!--            <label for="last-name">Last Name</label>-->
+    <!--            <input id="last-name" name="last-name" type="text" class="form-control" placeholder="Last name">-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</form>-->
+
+    <!-- Parent registration -->
+    <div id="register-parent">
+        <h4>Parent Registration</h4>
+        <div id="register-parent-baseball" class="row" style="display: none;">
+            <div class="col-2">
+                <h5>Baseball</h5>
+            </div>
+            <div th:each="baseballEvent : ${baseballEvents}"
+                 class="col">
+                <label th:text="${#calendars.format(baseballEvent.date, 'MMMM dd')}"
+                       class="form-check-label"
+                       th:for="'baseball.'+${baseballEvent.id}"></label>
+                <div>
+                    <button type="button" class="btn btn-success btn-toggle">Yes</button>
+                    <input type="hidden"
+                           th:id="'baseball.'+${baseballEvent.id}"
+                           th:name="'baseball.'+${baseballEvent.id}"
+                           value="true">
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div id="register-parent-soccer" class="row" style="display: none;">
+            <div class="col-2">
+                <h5>Soccer</h5>
+            </div>
+            <div th:each="soccerEvent : ${soccerEvents}"
+                 class="col">
+                <label th:text="${#calendars.format(soccerEvent.date, 'MMMM d')}"
+                       class="form-check-label"
+                       th:for="'soccer.'+${soccerEvent.id}"></label>
+                <div>
+                    <button type="button" class="btn btn-success btn-toggle">Yes</button>
+                    <input type="hidden"
+                           th:id="'soccer.'+${soccerEvent.id}"
+                           th:name="'soccer.'+${soccerEvent.id}"
+                           value="true">
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+    <!-- This form comes from Stripe -->
+    <div id="register-payment">
+        <h4>Payment</h4>
+        <form id="payment-form">
+            <div id="card-element">
+                <!-- Elements will create input elements here -->
+            </div>
+
+            <!-- We'll put the error messages in this element -->
+            <div id="card-errors" role="alert"></div>
+
+            <button id="submit">Pay</button>
+        </form>
+    </div>
 
 </div>
+<!--<a href="/payment">-->
+<!--    <button type="button" class="btn btn-primary">Continue to payment</button>-->
+<!--</a>-->
 
 <div th:replace="fragments/footer :: footer"></div>
 

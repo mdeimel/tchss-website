@@ -45,6 +45,13 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+		<!-- Payment -->
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>17.7.0</version>
+		</dependency>
+
         <!-- Actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

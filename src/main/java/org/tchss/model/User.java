@@ -12,17 +12,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"created, updated"})
+@EqualsAndHashCode(exclude = {"created", "updated"})
 @Entity
 @Table(name = "users")
 public class User {
@@ -47,6 +49,9 @@ public class User {
     @NotNull
     @NotBlank
     private String lastName;
+
+//    @OneToMany
+//    private Set<Registration> registeredChildren;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

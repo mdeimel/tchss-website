@@ -6,13 +6,16 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.tchss.exception.AuthenticationException;
 import org.tchss.model.PasswordResetToken;
+import org.tchss.model.Registration;
 import org.tchss.model.User;
 import org.tchss.repo.PasswordResetTokenRepository;
+import org.tchss.repo.RegistrationRepository;
 import org.tchss.repo.UserRepository;
 import org.tchss.service.NotificationService;
 import org.tchss.service.UserService;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Log4j2
@@ -24,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private RegistrationRepository registrationRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -95,5 +101,24 @@ public class UserServiceImpl implements UserService {
         String message = "Please go to the following link to reset your password " + link;
 
         notificationService.sendEmail("TCHSS Password Reset", email, message);
+    }
+
+    @Override
+    public List<Registration> getRegistrations(User user) {
+        return registrationRepository.findAllByUser(user);
+    }
+
+    @Override
+    public Registration addRegistration(Registration registration) {
+        return registrationRepository.save(registration);
+    }
+
+    @Override
+    public void deleteRegistration(User user, Integer registrationId) {
+        Registration registration = registrationRepository.
+                findById(registrationId).orElse(null);
+        if (registration != null && registration.getUser().equals(user)) {
+            registrationRepository.delete(registration);
+        }
     }
 }

@@ -1,0 +1,5 @@
+CREATE TABLE event (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMPTZ NOT NULL,
+    event_type VARCHAR(25) NOT NULL
+);

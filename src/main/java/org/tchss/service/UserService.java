@@ -1,7 +1,9 @@
 package org.tchss.service;
 
+import org.tchss.model.Registration;
 import org.tchss.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -12,4 +14,8 @@ public interface UserService {
     public Optional<User> findByEmail(String email);
 
     public void generatePasswordResetToken(String email);
+
+    public List<Registration> getRegistrations(User user);
+    public Registration addRegistration(Registration registration);
+    public void deleteRegistration(User user, Integer registrationId);
 }

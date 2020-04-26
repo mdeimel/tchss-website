@@ -3,3 +3,9 @@ databaseChangeLog:
         file: db/changelog/changes/v0001-users.sql
     - include:
         file: db/changelog/changes/v0002-password_reset_token.sql
+    - include:
+        file: db/changelog/changes/v0003-registration.sql
+    - include:
+        file: db/changelog/changes/v0004-event.sql
+    - include:
+        file: db/changelog/changes/v0005-price.sql
